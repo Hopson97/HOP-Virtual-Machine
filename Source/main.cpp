@@ -4,9 +4,8 @@
 int main()
 {
     Assembler assumbler;
-    assumbler.assemble( "dot hops/test.hop" );
 
-    CPU::Virtual_CPU cpu( assumbler.getInstructions(), assumbler.getMainLine() );
+    CPU::Virtual_CPU cpu( assumbler.assemble( "dot hops/test.hop" ) );
 
     while( cpu.isRunning() )
     {

@@ -15,7 +15,9 @@ const std::map<std::string, CPU::Instruction> Assembler::strToIns =
     { "EXIT", CPU::Instruction::EXIT        }
 };
 
-void
+//Assembles the .hop file into a list of unsigned char that the VM can
+//understand
+const CPU::Program&
 Assembler :: assemble ( const std::string& fileName )
 {
     std::ifstream inFile;
@@ -27,14 +29,14 @@ Assembler :: assemble ( const std::string& fileName )
         {
             addInstr();
             inFile >> m_inputNumber;
-            m_instructions.push_back( m_inputNumber );
+            m_program.instructions.push_back( m_inputNumber );
             m_numInstructions++;
         }
         else if ( m_inputString == "JUMP" )
         {
             addInstr();
             inFile >> m_inputString;
-            m_instructions.push_back( m_jumps.at( m_inputString ) );
+            m_program.instructions.push_back( m_jumps.at( m_inputString ) );
             m_numInstructions++;
         }
         else if ( wordFound( ":" ) )
@@ -45,7 +47,7 @@ Assembler :: assemble ( const std::string& fileName )
                              m_numInstructions );
 
             if ( wordFound( "main" ) )
-                m_mainLine = m_numInstructions;
+                m_program.entryPoint = m_numInstructions;
         }
         else
         {
@@ -54,33 +56,25 @@ Assembler :: assemble ( const std::string& fileName )
     }
     addEnd();
 
-    assert ( m_instructions.size() > 0 );
-    assert ( m_mainLine != -1 );
+    assert ( m_program.instructions.size() > 0 );
+    assert ( m_program.entryPoint != -1 );
+
+    return m_program;
 }
 
-const std::vector <byte>&
-Assembler :: getInstructions() const
-{
-    return m_instructions;
-}
-
-int
-Assembler :: getMainLine () const
-{
-    return m_mainLine;
-}
-
+//Converts a enum into a "byte"
 byte
 Assembler :: toByte ( const CPU::Instruction i )
 {
     return static_cast<byte>(i);
 }
 
+//Adds an instruction into the list of them
 void
 Assembler :: addInstr()
 {
     try {
-        m_instructions.push_back( toByte ( strToIns.at ( m_inputString ) ) );
+        m_program.instructions.push_back( toByte ( strToIns.at ( m_inputString ) ) );
         m_numInstructions++;
     }
     catch ( std::out_of_range e )
@@ -91,13 +85,16 @@ Assembler :: addInstr()
     }
 }
 
+//Adds "exit" label into the instructions.
+//This is done at the end of the program and at labels
 void
 Assembler :: addEnd ()
 {
-    m_instructions.push_back( CPU::getEnd() );
+    m_program.instructions.push_back( CPU::getEnd() );
     m_numInstructions++;
 }
 
+//Checks if a specific word or char is present in the input string
 bool
 Assembler :: wordFound( std::string wordOrChar ) const
 {

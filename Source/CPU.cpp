@@ -7,12 +7,13 @@
 namespace CPU
 {
 
-Virtual_CPU :: Virtual_CPU ( const std::vector<byte>& listInstructions, const int main )
-:   m_instructions ( listInstructions )
-,   ip             ( main )
+Virtual_CPU :: Virtual_CPU ( const Program& program )
+:   m_instructions ( program.instructions )
+,   ip             ( program.entryPoint )
 {
 }
 
+//Reads the next instruction and executes it
 void
 Virtual_CPU :: tick()
 {
@@ -48,23 +49,18 @@ Virtual_CPU :: tick()
             std::cout << m_stack[sp] << std::endl;
             break;
 
-        case Instruction::JUMP:{
-            int jumpTo = m_instructions.at(ip);
-            ip = jumpTo;
+        case Instruction::JUMP:
+            ip = m_instructions.at(ip);
             break;
-            }
 
         case Instruction::EXIT:
             m_isRunning = false;
             break;
-
-        case Instruction::END:
-            m_isRunning = false;
-            break;
-
     }
 }
 
+//Checks for the next instruction. Can cause program to exit if the instruction
+//pointer is out of range
 void
 Virtual_CPU :: getInstruction ()
 {
@@ -79,16 +75,19 @@ Virtual_CPU :: getInstruction ()
     }
 }
 
+//Checks if the CPU/ VM is still running
 bool
 Virtual_CPU :: isRunning () const
 {
     return m_isRunning;
 }
 
+//Helper function for the assembler to get the exit instruction.
+//The purpose is for the program end and at the end of label sections
 int
 getEnd ()
 {
-    return static_cast<int>(Instruction::END);
+    return static_cast<int>(Instruction::EXIT);
 }
 
 }

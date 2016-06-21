@@ -17,17 +17,22 @@ enum class Instruction
     SUB,        //Subtracts top two values to stack
     PRINT,      //Prints top value of stack
     JUMP,
-    EXIT,        //Exit the program
-    END
+    EXIT        //Exit the program
 };
 
 int getEnd ();
+
+struct Program
+{
+    std::vector <byte>  instructions;
+    int entryPoint = -1;
+};
 
 
 class Virtual_CPU //Lets call it "hop"
 {
     public:
-        Virtual_CPU     ( const std::vector<byte>& listInstructions, const int main );
+        Virtual_CPU     ( const Program& program );
 
         void tick       ();
 

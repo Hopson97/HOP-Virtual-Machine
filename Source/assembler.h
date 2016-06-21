@@ -7,11 +7,7 @@
 class Assembler
 {
     public:
-        void assemble (const std::string& fileName );
-
-        const std::vector <byte>& getInstructions() const;
-
-        int getMainLine () const;
+        const CPU::Program& assemble ( const std::string& fileName );
 
     private:
         byte toByte     ( const CPU::Instruction i );
@@ -22,14 +18,13 @@ class Assembler
         bool wordFound  ( std::string wordOrChar ) const;
 
         /* DATA */
-        std::vector <byte>              m_instructions;
         std::map <std::string, int>     m_jumps;
-
         std::string     m_inputString;
 
-        int             m_mainLine;
         int             m_inputNumber;
         unsigned        m_numInstructions = 0;
+
+        CPU::Program         m_program;
 
         const static std::map<std::string, CPU::Instruction> strToIns;
 };
