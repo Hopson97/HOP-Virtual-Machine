@@ -22,7 +22,7 @@ You can add labels wherever. However, you can only "JUMP" to the ones defined ea
 eg:
 
 _____________
-
+```
 SomeLabel:
   PUSH 7
   PUSH 3
@@ -35,7 +35,7 @@ main:
   SUB
   PRINT
   JUMP SomeLabel
-  
+  ```
   _________________
   
 Prints out:
