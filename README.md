@@ -1,7 +1,6 @@
 # HOP-Virtual-Machine
-I'm learning about how the CPU works, and so I decided to try make one :P
 
-It is a simple "CPU", however I'm not 100% certain I am "doing it right".
+It is a simple "CPU"/ fake assembly langauge.
 
 So far the instructions for it :
 
@@ -12,7 +11,36 @@ So far the instructions for it :
 | 2     | ADD         |                                   | Adds top two values of the stack together, adds new value on top |
 | 3     | SUB         |                                   | Adds top two values of the stack together,                       |
 | 4     | PRINT       |                                   | Adds new value on top                                            |
-| 5     | EXIT        |                                   | Exits the program                                                |
+| 5     | JUMP        |                                   | Jumps to a "label" in the program                                 |
+| 6     | EXIT        |                                   | Exits the program                                                |
 
 
-So far it runs test.hop, and it prints 7 and 14 as expected.
+As seen in the instruction list, you can also add labels. Every .hop needs a "main:" label as this marks the entry point of the program.
+
+You can add labels wherever. However, you can only "JUMP" to the ones defined earlier in the program so far.
+
+eg:
+
+_____________
+
+SomeLabel:
+  PUSH 7
+  PUSH 3
+  ADD
+  PRINT
+  
+main:
+  PUSH 5
+  PUSH 3
+  SUB
+  PRINT
+  JUMP SomeLabel
+  
+  _________________
+  
+Prints out:
+  2
+  10
+  
+  
+  
