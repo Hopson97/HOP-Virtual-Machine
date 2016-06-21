@@ -4,20 +4,20 @@
 #include <fstream>
 #include <cassert>
 
-const std::map<std::string, CPU::Instruction> Assembler::strToIns =
+const std::map<std::string, Virtual_Machine::Instruction> Assembler::strToIns =
 {
-    { "PUSH", CPU::Instruction::PUSH        },
-    { "POP",  CPU::Instruction::POP         },
-    { "ADD",  CPU::Instruction::ADD         },
-    { "SUB",  CPU::Instruction::SUB         },
-    { "PRINT",  CPU::Instruction::PRINT     },
-    { "JUMP",   CPU::Instruction::JUMP      },
-    { "EXIT", CPU::Instruction::EXIT        }
+    { "PUSH",   Virtual_Machine::Instruction::PUSH        },
+    { "POP",    Virtual_Machine::Instruction::POP         },
+    { "ADD",    Virtual_Machine::Instruction::ADD         },
+    { "SUB",    Virtual_Machine::Instruction::SUB         },
+    { "PRINT",  Virtual_Machine::Instruction::PRINT     },
+    { "JUMP",   Virtual_Machine::Instruction::JUMP      },
+    { "EXIT",   Virtual_Machine::Instruction::EXIT        }
 };
 
 //Assembles the .hop file into a list of unsigned char that the VM can
 //understand
-const CPU::Program&
+const Virtual_Machine::Program&
 Assembler :: assemble ( const std::string& fileName )
 {
     std::ifstream inFile;
@@ -39,14 +39,14 @@ Assembler :: assemble ( const std::string& fileName )
             m_program.instructions.push_back( m_jumps.at( m_inputString ) );
             m_numInstructions++;
         }
-        else if ( wordFound( ":" ) )
+        else if ( wordFound( ":" ) ) //A label
         {
             if ( m_numInstructions != 0 )
                 addEnd();
             m_jumps.emplace( m_inputString.substr(0, m_inputString.size() - 1 ),
                              m_numInstructions );
 
-            if ( wordFound( "main" ) )
+            if ( wordFound( "main" ) )  //Entry point of the program found
                 m_program.entryPoint = m_numInstructions;
         }
         else
@@ -64,7 +64,7 @@ Assembler :: assemble ( const std::string& fileName )
 
 //Converts a enum into a "byte"
 byte
-Assembler :: toByte ( const CPU::Instruction i )
+Assembler :: toByte ( const Virtual_Machine::Instruction i )
 {
     return static_cast<byte>(i);
 }
@@ -90,7 +90,7 @@ Assembler :: addInstr()
 void
 Assembler :: addEnd ()
 {
-    m_program.instructions.push_back( CPU::getEnd() );
+    m_program.instructions.push_back( Virtual_Machine::getEnd() );
     m_numInstructions++;
 }
 

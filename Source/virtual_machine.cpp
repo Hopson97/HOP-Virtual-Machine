@@ -1,13 +1,13 @@
-#include "CPU.h"
+#include "virtual_machine.h"
 
 #include <stdexcept>
 #include <cstdio>
 #include <iostream>
 
-namespace CPU
+namespace Virtual_Machine
 {
 
-Virtual_CPU :: Virtual_CPU ( const Program& program )
+HOP :: HOP ( const Program& program )
 :   m_instructions ( program.instructions )
 ,   ip             ( program.entryPoint )
 {
@@ -15,7 +15,7 @@ Virtual_CPU :: Virtual_CPU ( const Program& program )
 
 //Reads the next instruction and executes it
 void
-Virtual_CPU :: tick()
+HOP :: tick()
 {
     getInstruction();
 
@@ -62,7 +62,7 @@ Virtual_CPU :: tick()
 //Checks for the next instruction. Can cause program to exit if the instruction
 //pointer is out of range
 void
-Virtual_CPU :: getInstruction ()
+HOP :: getInstruction ()
 {
     try
     {
@@ -75,9 +75,9 @@ Virtual_CPU :: getInstruction ()
     }
 }
 
-//Checks if the CPU/ VM is still running
+//Checks if the virtual_machine/ VM is still running
 bool
-Virtual_CPU :: isRunning () const
+HOP :: isRunning () const
 {
     return m_isRunning;
 }

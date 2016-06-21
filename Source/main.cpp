@@ -1,15 +1,15 @@
-#include "CPU.h"
+#include "virtual_machine.h"
 #include "assembler.h"
 
 int main()
 {
     Assembler assumbler;
 
-    CPU::Virtual_CPU cpu( assumbler.assemble( "dot hops/test.hop" ) );
+    Virtual_Machine::HOP hop_machine( assumbler.assemble( "dot hops/test.hop" ) );
 
-    while( cpu.isRunning() )
+    while( hop_machine.isRunning() )
     {
-        cpu.tick();
+        hop_machine.tick();
     }
 
     return 0;

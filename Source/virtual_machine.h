@@ -1,12 +1,12 @@
-#ifndef CPU_H
-#define CPU_H
+#ifndef VIRTUAL_MACHINE_H
+#define VIRTUAL_MACHINE_H
 
 #include <stack>
 #include <vector>
 
 typedef unsigned char byte;
 
-namespace CPU
+namespace Virtual_Machine
 {
 
 enum class Instruction
@@ -29,10 +29,10 @@ struct Program
 };
 
 
-class Virtual_CPU //Lets call it "hop"
+class HOP //Lets call it "hop"
 {
     public:
-        Virtual_CPU     ( const Program& program );
+        HOP     ( const Program& program );
 
         void tick       ();
 
@@ -60,4 +60,4 @@ class Virtual_CPU //Lets call it "hop"
 
 }
 
-#endif // CPU_H
+#endif // virtual_machine_H

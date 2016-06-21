@@ -2,15 +2,15 @@
 #define ASSEMBLER_H
 
 #include <map>
-#include "CPU.h"
+#include "virtual_machine.h"
 
 class Assembler
 {
     public:
-        const CPU::Program& assemble ( const std::string& fileName );
+        const Virtual_Machine::Program& assemble ( const std::string& fileName );
 
     private:
-        byte toByte     ( const CPU::Instruction i );
+        byte toByte     ( const Virtual_Machine::Instruction i );
 
         void addInstr   ();
         void addEnd     ();
@@ -24,9 +24,9 @@ class Assembler
         int             m_inputNumber;
         unsigned        m_numInstructions = 0;
 
-        CPU::Program         m_program;
+        Virtual_Machine::Program         m_program;
 
-        const static std::map<std::string, CPU::Instruction> strToIns;
+        const static std::map<std::string, Virtual_Machine::Instruction> strToIns;
 };
 
 #endif // ASSEMBLER_H
