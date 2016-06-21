@@ -11,7 +11,7 @@ So far the instructions for it :
 | 2     | ADD         |                                   | Adds top two values of the stack together, adds new value on top |
 | 3     | SUB         |                                   | Adds top two values of the stack together,                       |
 | 4     | PRINT       |                                   | Adds new value on top                                            |
-| 5     | JUMP        |                                   | Jumps to a "label" in the program                                 |
+| 5     | JUMP        | Requires a label to jump to       | Jumps to a "label" in the program                                |
 | 6     | EXIT        |                                   | Exits the program                                                |
 
 
