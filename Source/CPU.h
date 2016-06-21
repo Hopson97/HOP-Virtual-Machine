@@ -16,17 +16,22 @@ enum class Instruction
     ADD,        //Adds top two values to stack
     SUB,        //Subtracts top two values to stack
     PRINT,      //Prints top value of stack
-    EXIT        //Exit the program
+    JUMP,
+    EXIT,        //Exit the program
+    END
 };
+
+int getEnd ();
+
 
 class Virtual_CPU //Lets call it "hop"
 {
     public:
-        Virtual_CPU     ( std::vector<byte>& listInstructions );
+        Virtual_CPU     ( const std::vector<byte>& listInstructions, const int main );
 
         void tick       ();
 
-        bool isRunning  ();
+        bool isRunning  () const;
 
     private:
         void getInstruction ();
@@ -44,7 +49,7 @@ class Virtual_CPU //Lets call it "hop"
         int a,          //General, currently not sure what this is
             b,
             c,
-            ip = 0,     //Instruction pointer
+            ip,         //Instruction pointer
             sp = -1;    //Stack pointer
 };
 

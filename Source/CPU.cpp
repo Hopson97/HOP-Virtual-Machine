@@ -7,10 +7,10 @@
 namespace CPU
 {
 
-Virtual_CPU :: Virtual_CPU ( std::vector<byte>& listInstructions )
-:   m_instructions ( std::move ( listInstructions ) )
+Virtual_CPU :: Virtual_CPU ( const std::vector<byte>& listInstructions, const int main )
+:   m_instructions ( listInstructions )
+,   ip             ( main )
 {
-
 }
 
 void
@@ -39,7 +39,7 @@ Virtual_CPU :: tick()
         case Instruction::SUB:
             a = m_stack[sp--];
             b = m_stack[sp--];
-            c = a - b;
+            c = b - a;
             sp++;
             m_stack[sp] = c;
             break;
@@ -48,7 +48,17 @@ Virtual_CPU :: tick()
             std::cout << m_stack[sp] << std::endl;
             break;
 
+        case Instruction::JUMP:{
+            int jumpTo = m_instructions.at(ip);
+            ip = jumpTo;
+            break;
+            }
+
         case Instruction::EXIT:
+            m_isRunning = false;
+            break;
+
+        case Instruction::END:
             m_isRunning = false;
             break;
 
@@ -64,14 +74,21 @@ Virtual_CPU :: getInstruction ()
     }
     catch ( std::out_of_range e )
     {
+        std::cout << "Out of range " << ip-- << std::endl;
         m_isRunning = false;
     }
 }
 
 bool
-Virtual_CPU :: isRunning ()
+Virtual_CPU :: isRunning () const
 {
     return m_isRunning;
+}
+
+int
+getEnd ()
+{
+    return static_cast<int>(Instruction::END);
 }
 
 }
