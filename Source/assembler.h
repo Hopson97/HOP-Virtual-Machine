@@ -15,6 +15,15 @@ class Assembler
         void addInstr   ();
         void addEnd     ();
 
+        void addPush    ( std::ifstream& inFile );
+
+        void addJump    ( std::ifstream& inFile, bool initialAddInstr = false );
+        void addComparitiveJump( std::ifstream& inFile );
+
+
+        void addLabel   ();
+
+
         bool wordFound  ( std::string wordOrChar ) const;
 
         /* DATA */
@@ -26,7 +35,7 @@ class Assembler
 
         Virtual_Machine::Program         m_program;
 
-        const static std::map<std::string, Virtual_Machine::Instruction> strToIns;
+        const static std::map< const std::string, Virtual_Machine::Instruction> strToIns;
 };
 
 #endif // ASSEMBLER_H

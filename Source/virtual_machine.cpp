@@ -17,8 +17,31 @@ HOP :: HOP ( const Program& program )
 void
 HOP :: tick()
 {
-    getInstruction();
+    fetchInstruction();
+    executeInstruction();
+}
 
+//Checks for the next instruction. Can cause program to exit if the instruction
+//pointer is out of range
+void
+HOP :: fetchInstruction ()
+{
+    try
+    {
+        m_currInstruction = static_cast<Instruction>(m_instructions.at( ip++ ) );
+    }
+    catch ( std::out_of_range e )
+    {
+        std::cout   << "Out of range: "     << ip
+                    << ". Max range of: "   << m_instructions.size() - 1
+                    << std::endl;
+        m_isRunning = false;
+    }
+}
+
+void
+HOP :: executeInstruction ()
+{
     switch ( m_currInstruction )
     {
         case Instruction::PUSH:
@@ -53,25 +76,37 @@ HOP :: tick()
             ip = m_instructions.at(ip);
             break;
 
+        case Instruction::JIE:
+            if ( m_stack[sp] == m_instructions.at( ip++ ) )
+                ip = m_instructions.at( ip );
+            else
+                ip++;
+            break;
+
+        case Instruction::JIN:
+            if ( m_stack[sp] != m_instructions.at( ip++ ) )
+                ip = m_instructions.at( ip );
+            else
+                ip++;
+            break;
+
+        case Instruction::JIL:
+            if ( m_stack[sp] < m_instructions.at( ip++ ) )
+                ip = m_instructions.at( ip );
+            else
+                ip++;
+            break;
+
+        case Instruction::JIG:
+            if ( m_stack[sp] > m_instructions.at( ip++ ) )
+                ip = m_instructions.at( ip );
+            else
+                ip++;
+            break;
+
         case Instruction::EXIT:
             m_isRunning = false;
             break;
-    }
-}
-
-//Checks for the next instruction. Can cause program to exit if the instruction
-//pointer is out of range
-void
-HOP :: getInstruction ()
-{
-    try
-    {
-        m_currInstruction = static_cast<Instruction>(m_instructions.at( ip++ ) );
-    }
-    catch ( std::out_of_range e )
-    {
-        std::cout << "Out of range " << ip-- << std::endl;
-        m_isRunning = false;
     }
 }
 

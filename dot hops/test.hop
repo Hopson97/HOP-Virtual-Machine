@@ -1,20 +1,11 @@
-test2:
-    PUSH 8
-    PUSH 2
-    SUB
+test:
+    PUSH 7
     PRINT
     EXIT
 
-
-test:
-    PUSH 7
-    PUSH 3
-    ADD
-    PRINT
-    JUMP test2
-
 main:
-    PUSH 4
+    PUSH 5
     PRINT
-    JUMP test
-
+    JIG 6 test
+    PUSH 2
+    PRINT

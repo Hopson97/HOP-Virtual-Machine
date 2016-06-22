@@ -13,10 +13,18 @@ enum class Instruction
 {
     PUSH,       //Pushes a value to top of stack eg "PUSH 5"
     POP,        //Removes value from top of stack
+
     ADD,        //Adds top two values to stack
     SUB,        //Subtracts top two values to stack
+
     PRINT,      //Prints top value of stack
-    JUMP,
+
+    JUMP,       //Jump to label
+    JIE,        //Jump if equal
+    JIN,        //Jump if not equal
+    JIL,         //Jump if less than
+    JIG,         //Jump is greater than
+
     EXIT        //Exit the program
 };
 
@@ -32,14 +40,15 @@ struct Program
 class HOP //Lets call it "hop"
 {
     public:
-        HOP     ( const Program& program );
+        HOP                     ( const Program& program );
 
-        void tick       ();
+        void tick               ();
 
-        bool isRunning  () const;
+        bool isRunning          () const;
 
     private:
-        void getInstruction ();
+        void fetchInstruction   ();
+        void executeInstruction ();
 
 
         std::vector <byte>  m_instructions;
