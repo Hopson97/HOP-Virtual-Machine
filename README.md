@@ -1,6 +1,6 @@
 # HOP-Virtual-Machine
 
-It is a simple "CPU"/ fake assembly langauge.
+This is a 2 part program, a "assembler" and "virtual CPU" to interpret the assembled instructions.
 
 So far the instructions for it :
 
